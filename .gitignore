@@ -1,13 +1,20 @@
-# 忽略虛擬環境
+# 1. 虛擬環境 (最重要)
+.venv/
 .netpage_course_env/
 .another_course_env/
 
-# 忽略 Python 快取
+# 2. 各類快取 (Cache)
 __pycache__/
 *.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+.cache/
 
-# 忽略資料庫（如果是正式專案，通常不傳 db.sqlite3）
-db.sqlite3
-
-# 忽略 VS Code 設定
+# 3. 編輯器與系統檔案
 .vscode/
+.DS_Store
+Thumbs.db
+
+# 4. 資料庫 (避免上傳作業外的個資)
+db.sqlite3
