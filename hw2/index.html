@@ -1,0 +1,193 @@
+ <!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<title>資工選課表</title>
+<style>
+table {
+  font-family: Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+td, th {
+  border: 1px solid #ddd;
+  padding: 6px;
+}
+
+tr:nth-child(even){background-color: #f2f2f2;}
+
+tr:hover {background-color: #ddd;}
+
+th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: #04AA6D;
+  color: white;
+}
+</style>
+</head>
+
+<script>
+  function changeTeacher() {
+    // 1. 找到 id 為 teacher-name 的元素
+    const teacherCell = document.getElementById('teachername');
+    
+    // 2. 修改它的內容
+    teacherCell.innerText = "李春良";
+    
+    // 3. (加分題) 順便改個顏色讓效果更明顯
+    teacherCell.style.color = "red";
+    teacherCell.style.fontWeight = "bold";
+  }
+</script>
+<body>
+
+<h2>資工選課表</h2>
+
+<table>
+  <tr>
+    <th>開課單位</th>
+    <th>課程名稱</th>
+    <th>授課教師</th>
+  </tr>
+  <tr>
+    <td>資工系</td>
+    <td>
+  <button popovertarget="my_course_info" style="background:none; border:none; color:blue; text-decoration:underline; cursor:pointer; padding:0;">
+    物件導向軟體設計
+  </button>
+
+  <div id="my_course_info" popover style="padding:20px; border-radius:10px; border:1px solid #ccc; box-shadow: 0 0 10px rgba(0,0,0,0.2); width:80%; height:80%;">
+    
+    <div style="display:flex; justify-content:space-between; align-items:center;">
+      <strong>課程詳細資訊</strong>
+      <button popovertarget="my_course_info" popovertargetaction="hide">關閉</button>
+    </div>
+
+    <hr>
+
+    <iframe src="https://catalog.cgu.edu.tw/coursedata?sectionid=A2337" width="100%" height="90%" frameborder="0"></iframe>
+
+  </div>
+</td>
+    <td id="teachername">黃崇源</td>
+  </tr>
+  <tr>
+    <td>資工系</td>
+    <td>
+  <button popovertarget="my_course_info1" style="background:none; border:none; color:blue; text-decoration:underline; cursor:pointer; padding:0;">
+    平行程式設計
+  </button>
+
+  <div id="my_course_info1" popover style="padding:20px; border-radius:10px; border:1px solid #ccc; box-shadow: 0 0 10px rgba(0,0,0,0.2); width:80%; height:80%;">
+    
+    <div style="display:flex; justify-content:space-between; align-items:center;">
+      <strong>課程詳細資訊</strong>
+      <button popovertarget="my_course_info1" popovertargetaction="hide">關閉</button>
+    </div>
+
+    <hr>
+
+    <iframe src="https://catalog.cgu.edu.tw/coursedata?sectionid=A2341" width="100%" height="90%" frameborder="0"></iframe>
+
+  </div>
+</td>
+    <td>李春良</td>
+  </tr>
+  <tr>
+    <td>資工系</td>
+    <td>
+  <button popovertarget="my_course_info2" style="background:none; border:none; color:blue; text-decoration:underline; cursor:pointer; padding:0;">
+    作業系統實務
+  </button>
+
+  <div id="my_course_info2" popover style="padding:20px; border-radius:10px; border:1px solid #ccc; box-shadow: 0 0 10px rgba(0,0,0,0.2); width:80%; height:80%;">
+    
+    <div style="display:flex; justify-content:space-between; align-items:center;">
+      <strong>課程詳細資訊</strong>
+      <button popovertarget="my_course_info2" popovertargetaction="hide">關閉</button>
+    </div>
+
+    <hr>
+
+    <iframe src="https://catalog.cgu.edu.tw/coursedata?sectionid=A2338" width="100%" height="90%" frameborder="0"></iframe>
+
+  </div>
+</td>
+    <td>張哲維</td>
+  </tr>
+  <tr>
+    <td>呼治系</td>
+    <td>
+  <button popovertarget="my_course_info3" style="background:none; border:none; color:blue; text-decoration:underline; cursor:pointer; padding:0;">
+    生物統計
+  </button>
+
+  <div id="my_course_info3" popover style="padding:20px; border-radius:10px; border:1px solid #ccc; box-shadow: 0 0 10px rgba(0,0,0,0.2); width:80%; height:80%;">
+    
+    <div style="display:flex; justify-content:space-between; align-items:center;">
+      <strong>課程詳細資訊</strong>
+      <button popovertarget="my_course_info3" popovertargetaction="hide">關閉</button>
+    </div>
+
+    <hr>
+
+    <iframe src="https://catalog.cgu.edu.tw/coursedata?sectionid=A1844" width="100%" height="90%" frameborder="0"></iframe>
+
+  </div>
+</td>
+    <td>萬國華</td>
+  </tr>
+  <tr>
+    <td>資工系</td>
+    <td>
+  <button popovertarget="my_course_info4" style="background:none; border:none; color:blue; text-decoration:underline; cursor:pointer; padding:0;">
+    通訊系統
+  </button>
+
+  <div id="my_course_info4" popover style="padding:20px; border-radius:10px; border:1px solid #ccc; box-shadow: 0 0 10px rgba(0,0,0,0.2); width:80%; height:80%;">
+    
+    <div style="display:flex; justify-content:space-between; align-items:center;">
+      <strong>課程詳細資訊</strong>
+      <button popovertarget="my_course_info4" popovertargetaction="hide">關閉</button>
+    </div>
+
+    <hr>
+
+    <iframe src="https://catalog.cgu.edu.tw/coursedata?sectionid=A2339" width="100%" height="90%" frameborder="0"></iframe>
+
+  </div>
+</td>
+    <td>陳仁暉</td>
+  </tr>
+  <tr>
+    <td>資工系</td>
+    <td>
+  <button popovertarget="my_course_info5" style="background:none; border:none; color:blue; text-decoration:underline; cursor:pointer; padding:0;">
+    軟硬體專題(2)
+  </button>
+
+  <div id="my_course_info5" popover style="padding:20px; border-radius:10px; border:1px solid #ccc; box-shadow: 0 0 10px rgba(0,0,0,0.2); width:80%; height:80%;">
+    
+    <div style="display:flex; justify-content:space-between; align-items:center;">
+      <strong>課程詳細資訊</strong>
+      <button popovertarget="my_course_info5" popovertargetaction="hide">關閉</button>
+    </div>
+
+    <hr>
+
+    <iframe src="https://catalog.cgu.edu.tw/coursedata?sectionid=A2340" width="100%" height="90%" frameborder="0"></iframe>
+
+  </div>
+</td>
+    <td>魏志達</td>
+  </tr>
+</table>
+<button onclick="changeTeacher()" style="margin-top: 10px;">Click Button</button>
+<div id="course-pop" popover style="padding:20px;">
+  <p>這是課程大綱...</p>
+</div>
+</body>
+</html>
