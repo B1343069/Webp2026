@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <title>修改打字機消消樂 - ex#7</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+        #container {
+            font-size: 3rem;
+            letter-spacing: 5px;
+            padding: 20px;
+            background: white;
+            border: 2px solid #333;
+            border-radius: 10px;
+            min-height: 1.5em;
+            word-wrap: break-word;
+            max-width: 80%;
+            text-align: center;
+        }
+        .instruction {
+            margin-top: 20px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>打字機消消樂</h1>
+    <div id="container"></div>
+
+    <div class="instruction">
+        <p>請輸入畫面上的第一個字母</p>
+        <p>連續打錯 <strong>3</strong> 次會額外增加字串！</p>
+    </div>
+
+    <script>
+        // 取得 DOM 元素
+        var container = document.getElementById('container');
+        var counter = 0; // 追蹤連續打錯的次數
+
+        // 初始化：網頁載入後先產生 3 個隨機字元
+        window.onload = function() {
+            container.textContent = add_new_chars(3);
+        }
+
+        /**
+         * 產生隨機小寫英文字串
+         * @param {number} x - 欲產生的字元數量
+         * @param {boolean} b - true: 隨機產 1 到 x 個字元; false: 固定產 x 個字元
+         */
+        function add_new_chars(x, b = true) {
+            var n = x;
+            if (b) {
+                n = Math.floor(Math.random() * x) + 1;
+            }
+            var str = '';
+            for (let i = 0; i < n; i++) {
+                str += String.fromCharCode(97 + Math.floor(Math.random() * 26));
+            }
+            return str;
+        };
+
+        // 監聽鍵盤事件
+        window.addEventListener("keyup", function(e) {
+            // 忽略非字母按鍵（如 Shift, Ctrl 等）
+            if (e.key.length !== 1) return;
+
+            // 取得畫面上目前的第一個字元
+            var firstone = container.textContent.substring(0, 1);
+
+            if (e.key === firstone) {
+                // 打對了：移除第一個字，正常增加亂數字串，並重設計數器
+                container.textContent = container.textContent.substring(1);
+                container.textContent += add_new_chars(3);
+                counter = 0; 
+            } else {
+                // 打錯了：增加錯誤計數
+                container.textContent += e.key;
+                counter++;
+
+                // 判斷是否連續打錯三次
+                if (counter >= 3) {
+                    // 額外增加 3 個亂數產生的字串
+                    container.textContent += add_new_chars(3, false);
+                    // 觸發後重設計數器
+                    counter = 0;
+                }
+            }
+        });
+    </script>
+</body>
+</html>
