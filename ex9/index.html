@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ex9 Using Flickr API</title>
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <main class="page">
+    <div class="toolbar">
+      <button type="button" onclick="getimg()">Get IMG</button>
+      <p id="status" class="status" aria-live="polite">Ready to load 4 recent photos.</p>
+    </div>
+
+    <section id="gallery" class="gallery" aria-live="polite">
+      <div class="gallery-cutout" aria-hidden="true"></div>
+    </section>
+  </main>
+
+  <script src="./app.js"></script>
+</body>
+</html>
