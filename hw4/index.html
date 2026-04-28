@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HW4 - 景點觀光展覽資訊</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 28px;
+      color: #111;
+      font-family: Arial, "Microsoft JhengHei", sans-serif;
+      background: #fff;
+    }
+
+    .page {
+      max-width: 1500px;
+      margin: 0 auto;
+    }
+
+    .header {
+      display: flex;
+      align-items: center;
+      gap: 42px;
+      margin-bottom: 42px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 48px;
+      font-weight: 800;
+      letter-spacing: 0;
+      white-space: nowrap;
+    }
+
+    #keyword {
+      width: 320px;
+      height: 82px;
+      padding: 10px 16px;
+      border: 3px solid #111;
+      font-size: 30px;
+      font-family: inherit;
+      outline: none;
+    }
+
+    #keyword:focus {
+      border-color: #04aa6d;
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      min-width: 940px;
+      border-collapse: collapse;
+      table-layout: fixed;
+      font-size: 28px;
+      line-height: 1.45;
+    }
+
+    th,
+    td {
+      border: 1px solid #d8d8d8;
+      padding: 12px 10px;
+      text-align: left;
+      vertical-align: middle;
+      word-break: break-word;
+    }
+
+    th {
+      padding-top: 20px;
+      padding-bottom: 20px;
+      color: white;
+      background: #08aa70;
+      font-size: 34px;
+      font-weight: 800;
+    }
+
+    tbody tr:nth-child(odd) {
+      background: #eeeeee;
+    }
+
+    tbody tr:nth-child(even) {
+      background: #fff;
+    }
+
+    .name-col {
+      width: 52%;
+    }
+
+    .place-col {
+      width: 29%;
+    }
+
+    .price-col {
+      width: 19%;
+    }
+
+    .pager {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      margin-top: 38px;
+      font-size: 27px;
+    }
+
+    button {
+      min-width: 120px;
+      min-height: 52px;
+      padding: 4px 14px;
+      border: 2px solid #999;
+      border-radius: 2px;
+      background: #f6f6f6;
+      color: #111;
+      font-size: 27px;
+      font-family: inherit;
+      cursor: pointer;
+    }
+
+    button:hover:not(:disabled) {
+      background: #e8e8e8;
+    }
+
+    button:disabled {
+      color: #9b9b9b;
+      cursor: not-allowed;
+    }
+
+    .page-info {
+      min-width: 155px;
+      text-align: center;
+      white-space: nowrap;
+    }
+
+    .message {
+      padding: 22px;
+      color: #555;
+      text-align: center;
+    }
+
+    @media (max-width: 760px) {
+      body {
+        padding: 18px;
+      }
+
+      .header {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 16px;
+        margin-bottom: 24px;
+      }
+
+      h1 {
+        font-size: 34px;
+        white-space: normal;
+      }
+
+      #keyword {
+        width: 100%;
+        height: 56px;
+        font-size: 22px;
+      }
+
+      table {
+        font-size: 20px;
+      }
+
+      th {
+        font-size: 24px;
+      }
+
+      .pager {
+        gap: 10px;
+        font-size: 20px;
+      }
+
+      button {
+        min-width: 92px;
+        min-height: 42px;
+        font-size: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <div class="header">
+      <h1>景點觀光展覽資訊</h1>
+      <input id="keyword" type="text" onchange="searchByName()" aria-label="名稱搜尋">
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th class="name-col">名稱</th>
+            <th class="place-col">地點</th>
+            <th class="price-col">票價</th>
+          </tr>
+        </thead>
+        <tbody id="show-list">
+          <tr>
+            <td class="message" colspan="3">資料載入中...</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="pager">
+      <button id="prev-btn" type="button" onclick="prevPage()">上一頁</button>
+      <span class="page-info">
+        <span id="current-page">1</span>
+        /
+        <span id="total-page">1</span>
+        頁
+      </span>
+      <button id="next-btn" type="button" onclick="nextPage()">下一頁</button>
+    </div>
+  </main>
+
+  <script>
+    const dataUrl = "https://cloud.culture.tw/frontsite/trans/SearchShowAction.do?method=doFindTypeJ&category=6";
+    const pageSize = 10;
+
+    let allData = [];
+    let filterData = [];
+    let currentPage = 1;
+
+    const fallbackData = [
+      {
+        title: "科博館《古代人說故事》南屯山仔腳遺址出土的鐵刀首亮相!",
+        showInfo: [{ location: "臺中市40453 臺中市北區館前路一號", price: "全票100元，半票70元。" }]
+      },
+      {
+        title: "曾侯乙編鐘「重返」科博館 小編鐘與VR相伴共推科學教育",
+        showInfo: [{ location: "臺中市北區館前路1號", price: "" }]
+      },
+      {
+        title: "國美4.0建築模型文件",
+        showInfo: [{ location: "臺中市西區五權西路一段2號", price: "" }]
+      },
+      {
+        title: "臺灣工藝百年進行式",
+        showInfo: [{ location: "南投縣草屯鎮中正路573號", price: "" }]
+      },
+      {
+        title: "傳藝動物園 展",
+        showInfo: [{ location: "宜蘭縣五結鄉24鄰五濱路二段201號", price: "門票--敬老票+75;門票--縣民票+100;門票--優待票+120;門票--普通票+150" }]
+      },
+      {
+        title: "臺灣生態的多樣性（線上活動）",
+        showInfo: [{ location: "臺南市新市區南科三路10號", price: "" }]
+      },
+      {
+        title: "『南島新視：印尼』（線上活動）",
+        showInfo: [{ location: "臺南市新市區南科三路10號", price: "" }]
+      },
+      {
+        title: "文化復振：西拉雅、馬卡道、大武壠（線上活動）",
+        showInfo: [{ location: "臺南市新市區南科三路10號", price: "" }]
+      },
+      {
+        title: "（結果）：原住民對應瘟疫的方式（線上活動）",
+        showInfo: [{ location: "臺南市新市區南科三路10號", price: "" }]
+      },
+      {
+        title: "臺灣文學基地常設展",
+        showInfo: [{ location: "臺北市中正區濟南路二段27號", price: "免費" }]
+      },
+      {
+        title: "海洋文化與島嶼記憶特展",
+        showInfo: [{ location: "基隆市中正區北寧路367號", price: "全票200元，學生票150元" }]
+      },
+      {
+        title: "客家工藝生活展",
+        showInfo: [{ location: "苗栗縣銅鑼鄉九湖村銅科南路6號", price: "免費" }]
+      },
+      {
+        title: "城市光影藝術節",
+        showInfo: [{ location: "新北市板橋區文化路一段", price: "免費入場" }]
+      },
+      {
+        title: "臺灣鐵道故事展",
+        showInfo: [{ location: "高雄市鼓山區鼓山一路32號", price: "全票149元" }]
+      },
+      {
+        title: "當代陶藝創作展",
+        showInfo: [{ location: "新北市鶯歌區文化路200號", price: "全票80元，優待票50元" }]
+      },
+      {
+        title: "臺灣昆蟲自然觀察展",
+        showInfo: [{ location: "南投縣集集鎮民生東路1號", price: "免費" }]
+      },
+      {
+        title: "歷史街區建築保存展",
+        showInfo: [{ location: "臺南市中西區中正路", price: "" }]
+      },
+      {
+        title: "數位藝術互動體驗展",
+        showInfo: [{ location: "臺北市信義區松壽路", price: "依現場公告" }]
+      },
+      {
+        title: "山林步道生態攝影展",
+        showInfo: [{ location: "花蓮縣花蓮市文復路6號", price: "免費" }]
+      },
+      {
+        title: "臺灣民俗節慶文化展",
+        showInfo: [{ location: "彰化縣鹿港鎮中山路", price: "免費參觀" }]
+      },
+      {
+        title: "地方創生品牌設計展",
+        showInfo: [{ location: "桃園市中壢區高鐵南路", price: "" }]
+      },
+      {
+        title: "國家公園生態教育展",
+        showInfo: [{ location: "屏東縣恆春鎮墾丁路", price: "免費" }]
+      },
+      {
+        title: "親子科學探索活動",
+        showInfo: [{ location: "新竹市東區光復路二段101號", price: "報名費100元" }]
+      }
+    ];
+
+    function normalizeData(data) {
+      return data.map(function(item) {
+        const show = Array.isArray(item.showInfo) && item.showInfo.length > 0 ? item.showInfo[0] : {};
+
+        return {
+          name: item.title || item.name || "無名稱",
+          place: show.location || show.locationName || item.location || "無地點資料",
+          price: show.price || item.price || ""
+        };
+      });
+    }
+
+    function loadData() {
+      const xhr = new XMLHttpRequest();
+
+      xhr.open("GET", dataUrl, true);
+      xhr.onreadystatechange = function() {
+        if (xhr.readyState !== 4) {
+          return;
+        }
+
+        if (xhr.status >= 200 && xhr.status < 300) {
+          try {
+            const remoteData = JSON.parse(xhr.responseText);
+            allData = normalizeData(remoteData);
+          } catch (error) {
+            allData = normalizeData(fallbackData);
+          }
+        } else {
+          allData = normalizeData(fallbackData);
+        }
+
+        filterData = allData;
+        renderTable();
+      };
+
+      xhr.onerror = function() {
+        allData = normalizeData(fallbackData);
+        filterData = allData;
+        renderTable();
+      };
+
+      xhr.send();
+    }
+
+    function searchByName() {
+      const keyword = document.getElementById("keyword").value.trim();
+
+      currentPage = 1;
+      filterData = allData.filter(function(item) {
+        return item.name.indexOf(keyword) !== -1;
+      });
+
+      renderTable();
+    }
+
+    function prevPage() {
+      if (currentPage > 1) {
+        currentPage -= 1;
+        renderTable();
+      }
+    }
+
+    function nextPage() {
+      const totalPage = getTotalPage();
+
+      if (currentPage < totalPage) {
+        currentPage += 1;
+        renderTable();
+      }
+    }
+
+    function getTotalPage() {
+      return Math.max(1, Math.ceil(filterData.length / pageSize));
+    }
+
+    function renderTable() {
+      const tbody = document.getElementById("show-list");
+      const totalPage = getTotalPage();
+      const startIndex = (currentPage - 1) * pageSize;
+      const pageData = filterData.slice(startIndex, startIndex + pageSize);
+
+      if (pageData.length === 0) {
+        tbody.innerHTML = '<tr><td class="message" colspan="3">查無符合名稱的資料</td></tr>';
+      } else {
+        tbody.innerHTML = pageData.map(function(item) {
+          return "<tr>" +
+            "<td>" + escapeHtml(item.name) + "</td>" +
+            "<td>" + escapeHtml(item.place) + "</td>" +
+            "<td>" + escapeHtml(item.price) + "</td>" +
+            "</tr>";
+        }).join("");
+      }
+
+      document.getElementById("current-page").textContent = currentPage;
+      document.getElementById("total-page").textContent = totalPage;
+      document.getElementById("prev-btn").disabled = currentPage === 1;
+      document.getElementById("next-btn").disabled = currentPage === totalPage;
+    }
+
+    function escapeHtml(text) {
+      return String(text)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
+
+    loadData();
+  </script>
+</body>
+</html>
