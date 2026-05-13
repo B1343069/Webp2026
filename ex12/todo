@@ -1,0 +1,4 @@
+在powershell PS C:\Users\a2006\my-cra-app>路徑下
+執行 ls -al build
+ls build/static/js
+ls build.static/css
