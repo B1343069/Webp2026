@@ -1,1 +1,6 @@
 ::1 - - [20/May/2026 13:18:08] "GET / HTTP/1.1" 200 -
+::1 - - [20/May/2026 13:24:35] "GET / HTTP/1.1" 200 -
+::1 - - [20/May/2026 13:24:35] "GET /static/css/main.88d21d03.css HTTP/1.1" 200 -
+::1 - - [20/May/2026 13:24:35] "GET /static/js/main.d2a16fd6.js HTTP/1.1" 200 -
+::1 - - [20/May/2026 13:24:35] code 404, message File not found
+::1 - - [20/May/2026 13:24:35] "GET /favicon.ico HTTP/1.1" 404 -

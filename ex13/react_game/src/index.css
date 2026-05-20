@@ -1,0 +1,10 @@
+body {
+  margin: 0;
+  color: #111827;
+  font-family: Arial, "Microsoft JhengHei", sans-serif;
+  background: #eef2f7;
+}
+
+button {
+  font: inherit;
+}
