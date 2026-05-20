@@ -18,3 +18,6 @@ Thumbs.db
 
 # 4. 資料庫 (避免上傳作業外的個資)
 db.sqlite3
+node_modules/
+build/
+

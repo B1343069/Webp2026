@@ -1,0 +1,15 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  color: #111827;
+  font-family: Arial, "Microsoft JhengHei", sans-serif;
+  background: #f7f8fb;
+}
+
+button,
+input {
+  font: inherit;
+}
